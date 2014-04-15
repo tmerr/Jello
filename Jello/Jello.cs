@@ -20,12 +20,17 @@ namespace Jello
             _camera = new Camera();
             _renderer = new Renderer();
             GL.Viewport(0, 0, this.Width, this.Height);
-            Mouse.Move += (a, b) => _camera.Turn(b.XDelta/200f, b.YDelta/200f);
-            //CursorVisible = false;
+            CursorVisible = false;
         }
 
         protected override void OnUpdateFrame(FrameEventArgs e)
         {
+            var delta = CalculateDelta();
+            if (delta.X != 0 || delta.Y != 0)
+            {
+                _camera.Turn(delta.X/500f, delta.Y/500f);
+            }
+
             var kState = OpenTK.Input.Keyboard.GetState();
             if (kState.IsKeyDown(Key.W))
                 _camera.Forward(5);
@@ -35,6 +40,8 @@ namespace Jello
                 _camera.Strafe(-2);
             if (kState.IsKeyDown(Key.D))
                 _camera.Strafe(2);
+
+            OpenTK.Input.Mouse.SetPosition(WindowCenter.X, WindowCenter.Y);
         }
 
         protected override void OnRenderFrame(FrameEventArgs e)
@@ -51,6 +58,23 @@ namespace Jello
                     (Bounds.Left + Bounds.Right) / 2,
                     (Bounds.Top + Bounds.Bottom) / 2);
             }
+        }
+
+        MouseState previous;
+
+        Point CalculateDelta()
+        {
+            var current = OpenTK.Input.Mouse.GetState();
+            Point delta = new Point(0, 0);
+            if (current != previous)
+            {
+                // Mouse state has changed
+                delta = new Point(current.X - previous.X, current.Y - previous.Y); 
+                int xdelta = current.X - previous.X;
+                int ydelta = current.Y - previous.Y;
+            }
+            previous = current;
+            return delta;
         }
     }
 }

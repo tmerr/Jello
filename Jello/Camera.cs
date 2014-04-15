@@ -28,9 +28,14 @@ namespace Jello
             }
         }
 
+        /// <summary>
+        /// Turn left/right proportional to X, and up/down proportional to Y.
+        /// </summary>
+        /// <param name="X"></param>
+        /// <param name="Y"></param>
         public void Turn(float X, float Y)
         {
-            leftRightAngle = Mod(leftRightAngle + X, 2 * (float)Math.PI);
+            leftRightAngle = Mod(leftRightAngle - X, 2 * (float)Math.PI);
             upDownAngle = Mod(upDownAngle + Y, 2 * (float)Math.PI);
         }
 
@@ -50,7 +55,7 @@ namespace Jello
             return Matrix4.LookAt(location, location + FacingVector, Vector3.UnitY) * projection;
         }
 
-        public static float Mod(float a, float n)
+        private static float Mod(float a, float n)
         {
             return a - (float)Math.Floor(a / n) * n;
         }

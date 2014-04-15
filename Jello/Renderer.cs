@@ -37,11 +37,11 @@ namespace Jello
 
             GL.Begin(PrimitiveType.Triangles);
             GL.Color3(0, 0, 255);
-            GL.Vertex3(-10f, 0f, 10f);
+            GL.Vertex3(-10f, 0f, 50f);
             GL.Color3(0, 0, 255);
-            GL.Vertex3(10f, 0f, 10f);
+            GL.Vertex3(10f, 0f, 50f);
             GL.Color3(0, 0, 255);
-            GL.Vertex3(0f, 15f, 10f);
+            GL.Vertex3(0f, 15f, 50f);
             GL.End();
         }
     }
