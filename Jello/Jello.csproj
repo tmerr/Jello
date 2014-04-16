@@ -46,10 +46,14 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Camera.cs" />
+    <Compile Include="StandardBufferGroup.cs" />
     <Compile Include="Renderer.cs" />
     <Compile Include="Jello.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="CameraTestRenderer.cs" />
+    <Compile Include="TestObject.cs" />
+    <Compile Include="VertexBuffer.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

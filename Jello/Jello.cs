@@ -13,14 +13,16 @@ namespace Jello
     {
         private readonly Camera _camera;
         private readonly Renderer _renderer;
+        private readonly TestObject test;
 
         public Jello()
 	    : base(1200, 800)
         {
             _camera = new Camera();
             _renderer = new Renderer();
-            GL.Viewport(0, 0, this.Width, this.Height);
+            _renderer.Use();
             CursorVisible = false;
+            test = new TestObject();
         }
 
         protected override void OnUpdateFrame(FrameEventArgs e)
@@ -28,25 +30,25 @@ namespace Jello
             var delta = CalculateDelta();
             if (delta.X != 0 || delta.Y != 0)
             {
-                _camera.Turn(delta.X/500f, delta.Y/500f);
+                _camera.Turn(delta.X/800f, delta.Y/800f);
             }
 
             var kState = OpenTK.Input.Keyboard.GetState();
             if (kState.IsKeyDown(Key.W))
-                _camera.Forward(5);
+                _camera.Forward(2);
             if (kState.IsKeyDown(Key.S))
-                _camera.Forward(-5);
+                _camera.Forward(-2);
             if (kState.IsKeyDown(Key.A))
-                _camera.Strafe(-2);
+                _camera.Strafe(-1);
             if (kState.IsKeyDown(Key.D))
-                _camera.Strafe(2);
+                _camera.Strafe(1);
 
             OpenTK.Input.Mouse.SetPosition(WindowCenter.X, WindowCenter.Y);
         }
 
         protected override void OnRenderFrame(FrameEventArgs e)
         {
-            _renderer.RenderTestTriangle(_camera);
+            _renderer.Render(_camera, Color.Aquamarine, new List<StandardBufferGroup>(new StandardBufferGroup[] { test.GetStandardBufferGroup() }));
             this.SwapBuffers();
         }
 
@@ -60,9 +62,9 @@ namespace Jello
             }
         }
 
-        MouseState previous;
+        private MouseState previous;
 
-        Point CalculateDelta()
+        private Point CalculateDelta()
         {
             var current = OpenTK.Input.Mouse.GetState();
             Point delta = new Point(0, 0);
