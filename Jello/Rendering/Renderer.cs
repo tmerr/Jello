@@ -7,7 +7,7 @@ using OpenTK;
 using OpenTK.Graphics.OpenGL4;
 using System.Drawing;
 
-namespace Jello
+namespace Jello.Rendering
 {
     class Renderer
     {
@@ -86,7 +86,7 @@ namespace Jello
             GL.Enable(EnableCap.DepthTest);
         }
 
-        public void Render(Camera camera, Color clearColor, IEnumerable<StandardBufferGroup> buffergroups)
+        public void Render(Camera camera, Color clearColor, IEnumerable<ModelData> buffergroups)
         {
             GL.ClearColor(clearColor);
             GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);

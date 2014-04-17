@@ -6,7 +6,7 @@ namespace Jello
     {
         static void Main(string[] args)
         {
-            using (var jello = new Jello())
+            using (var jello = new MainWindow())
             {
                 jello.Run();
             }

@@ -7,15 +7,17 @@ using OpenTK.Input;
 using OpenTK.Graphics.OpenGL;
 using System.Drawing;
 
+using Jello.Rendering;
+
 namespace Jello
 {
-    class Jello : GameWindow
+    class MainWindow : GameWindow
     {
         private readonly Camera _camera;
         private readonly Renderer _renderer;
         private readonly TestObject test;
 
-        public Jello()
+        public MainWindow()
 	    : base(1200, 800)
         {
             _camera = new Camera();
@@ -48,7 +50,7 @@ namespace Jello
 
         protected override void OnRenderFrame(FrameEventArgs e)
         {
-            _renderer.Render(_camera, Color.Aquamarine, new List<StandardBufferGroup>(new StandardBufferGroup[] { test.GetStandardBufferGroup() }));
+            _renderer.Render(_camera, Color.Aquamarine, new List<ModelData>(new ModelData[] { test.GetStandardBufferGroup() }));
             this.SwapBuffers();
         }
 
