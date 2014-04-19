@@ -59,8 +59,8 @@ namespace Jello
 
         public void Dispose()
         {
-	    if (id != -1)
-		GL.DeleteBuffer(id);
+            if (id != -1)
+                GL.DeleteBuffer(id);
         }
     }
 }

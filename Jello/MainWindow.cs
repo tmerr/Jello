@@ -8,6 +8,7 @@ using OpenTK.Graphics.OpenGL;
 using System.Drawing;
 
 using Jello.Rendering;
+using Jello.Entities;
 
 namespace Jello
 {
@@ -16,6 +17,7 @@ namespace Jello
         private readonly Camera _camera;
         private readonly Renderer _renderer;
         private readonly TestObject test;
+        private readonly Cloth cloth;
 
         public MainWindow()
 	    : base(1200, 800)
@@ -25,10 +27,15 @@ namespace Jello
             _renderer.Use();
             CursorVisible = false;
             test = new TestObject();
+            cloth = new Cloth();
         }
+
+        private static int ctr =0 ;
 
         protected override void OnUpdateFrame(FrameEventArgs e)
         {
+            float deltaTime = 0.012f;
+
             var delta = CalculateDelta();
             if (delta.X != 0 || delta.Y != 0)
             {
@@ -44,13 +51,17 @@ namespace Jello
                 _camera.Strafe(-1);
             if (kState.IsKeyDown(Key.D))
                 _camera.Strafe(1);
+            if (kState.IsKeyDown(Key.Space))
+                cloth.Push(_camera.location, _camera.FacingVector, 1f, 1f, deltaTime);
 
             OpenTK.Input.Mouse.SetPosition(WindowCenter.X, WindowCenter.Y);
+
+            cloth.Update(deltaTime);
         }
 
         protected override void OnRenderFrame(FrameEventArgs e)
         {
-            _renderer.Render(_camera, Color.Aquamarine, new List<ModelData>(new ModelData[] { test.GetStandardBufferGroup() }));
+            _renderer.Render(_camera, Color.Aquamarine, new List<ModelData>(new ModelData[] { test.ModelData, cloth.ModelData }));
             this.SwapBuffers();
         }
 

@@ -11,7 +11,7 @@ namespace Jello.Rendering
     {
         private float leftRightAngle;
         private float upDownAngle;
-        private Vector3 location;
+        public Vector3 location { get; private set; }
 
         public Camera()
         {
@@ -20,7 +20,7 @@ namespace Jello.Rendering
             location = Vector3.Zero;
         }
 
-        private Vector3 FacingVector
+        public Vector3 FacingVector
         {
             get
             {
