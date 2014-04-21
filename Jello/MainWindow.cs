@@ -18,6 +18,7 @@ namespace Jello
         private readonly Renderer _renderer;
         private readonly TestObject test;
         private readonly Cloth cloth;
+        private readonly JelloEntity jello;
 
         public MainWindow()
 	    : base(1200, 800)
@@ -28,6 +29,7 @@ namespace Jello
             CursorVisible = false;
             test = new TestObject();
             cloth = new Cloth();
+            jello = new JelloEntity();
         }
 
         protected override void OnUpdateFrame(FrameEventArgs e)
@@ -51,15 +53,18 @@ namespace Jello
                 _camera.Strafe(1);
             if (kState.IsKeyDown(Key.Space))
                 cloth.Push(_camera.location, _camera.FacingVector, 1f, 1f, deltaTime);
+            if (kState.IsKeyDown(Key.N))
+                jello.Update(deltaTime);
 
             OpenTK.Input.Mouse.SetPosition(WindowCenter.X, WindowCenter.Y);
 
             cloth.Update(deltaTime);
+            //jello.Update(deltaTime);
         }
 
         protected override void OnRenderFrame(FrameEventArgs e)
         {
-            _renderer.Render(_camera, Color.Aquamarine, new List<ModelData>(new ModelData[] { test.ModelData, cloth.ModelData }));
+            _renderer.Render(_camera, Color.Aquamarine, new List<ModelData>(new ModelData[] { test.ModelData, cloth.ModelData, jello.ModelData }));
             this.SwapBuffers();
         }
 

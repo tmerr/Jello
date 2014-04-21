@@ -50,7 +50,7 @@
     <Compile Include="Physics\StaticAnchor.cs" />
     <Compile Include="Physics\IAnchor.cs" />
     <Compile Include="Physics\MassSpringSystem.cs" />
-    <Compile Include="Entities\Jello.cs" />
+    <Compile Include="Entities\JelloEntity.cs" />
     <Compile Include="Physics\Node.cs" />
     <Compile Include="Physics\Spring.cs" />
     <Compile Include="Rendering\Camera.cs" />
@@ -61,6 +61,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Rendering\CameraTestRenderer.cs" />
     <Compile Include="Entities\TestObject.cs" />
+    <Compile Include="Point3.cs" />
     <Compile Include="VertexBuffer.cs" />
   </ItemGroup>
   <ItemGroup>
