@@ -30,8 +30,6 @@ namespace Jello
             cloth = new Cloth();
         }
 
-        private static int ctr =0 ;
-
         protected override void OnUpdateFrame(FrameEventArgs e)
         {
             float deltaTime = 0.012f;

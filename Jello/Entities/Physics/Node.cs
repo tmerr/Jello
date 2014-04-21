@@ -6,32 +6,22 @@ using System.Text;
 
 namespace Jello.Entities.Physics
 {
-    class Node : INode
+    /// <summary>
+    /// An immutable node at some point in time.
+    /// </summary>
+    struct Node
     {
-        public Vector3 Position { get; set; }
-        public Vector3 Velocity { get; set; }
-        public float Mass { get; set; }
+        public readonly IAnchor Anchor;
+        public readonly float Mass;
+        public readonly Vector3 Position;
+        public readonly Vector3 Velocity;
 
-        public Node(Vector3 position, float mass)
+        public Node(IAnchor anchor, float mass, Vector3 position, Vector3 velocity)
         {
-            Position = position;
+            Anchor = anchor;
             Mass = mass;
-            Velocity = Vector3.Zero;
-        }
-
-        public void ApplyForce(Vector3 force, float deltaTime)
-        {
-            Velocity += (force / Mass) * deltaTime;
-        }
-
-        public void ApplyAcceleration(Vector3 accel, float deltaTime)
-        {
-            Velocity += accel * deltaTime;
-        }
-
-        public void CrunchVelocities(float deltaTime)
-        {
-            Position += Velocity * deltaTime;
+            Position = position;
+            Velocity = velocity;
         }
     }
 }
