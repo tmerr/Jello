@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-using Jello.Entities.Physics;
+using Jello.Physics;
 using OpenTK;
 
 namespace Jello.Entities

@@ -46,13 +46,13 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Entities\Cloth.cs" />
-    <Compile Include="Entities\Physics\IntegratorType.cs" />
-    <Compile Include="Entities\Physics\StaticAnchor.cs" />
-    <Compile Include="Entities\Physics\IAnchor.cs" />
-    <Compile Include="Entities\Physics\MassSpringSystem.cs" />
+    <Compile Include="Physics\IntegratorType.cs" />
+    <Compile Include="Physics\StaticAnchor.cs" />
+    <Compile Include="Physics\IAnchor.cs" />
+    <Compile Include="Physics\MassSpringSystem.cs" />
     <Compile Include="Entities\Jello.cs" />
-    <Compile Include="Entities\Physics\Node.cs" />
-    <Compile Include="Entities\Physics\Spring.cs" />
+    <Compile Include="Physics\Node.cs" />
+    <Compile Include="Physics\Spring.cs" />
     <Compile Include="Rendering\Camera.cs" />
     <Compile Include="ModelData.cs" />
     <Compile Include="Rendering\Renderer.cs" />

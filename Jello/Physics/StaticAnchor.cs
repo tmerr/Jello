@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Jello.Entities.Physics
+namespace Jello.Physics
 {
     class StaticAnchor : IAnchor
     {

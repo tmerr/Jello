@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Jello.Entities.Physics
+namespace Jello.Physics
 {
     /// <summary>
     /// An immutable spring at some point in time.
