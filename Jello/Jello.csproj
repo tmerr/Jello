@@ -46,6 +46,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Entities\Cloth.cs" />
+    <Compile Include="Entities\Physics\IntegratorType.cs" />
     <Compile Include="Entities\Physics\StaticAnchor.cs" />
     <Compile Include="Entities\Physics\IAnchor.cs" />
     <Compile Include="Entities\Physics\MassSpringSystem.cs" />

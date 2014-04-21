@@ -14,11 +14,11 @@ namespace Jello.Entities
         private VertexBuffer<Vector3> _normalsBuffer;
         private VertexBuffer<uint> _indicesBuffer;
 
-        MassSpringSystem _system = new MassSpringSystem();
+        MassSpringSystem _system = new MassSpringSystem(IntegratorType.RungeKutta4);
 
         private const float Gravity = 9.8f;
         private const float SpringConstant = 100f;
-        private const float DampingConstant = 0f;
+        private const float DampingConstant = 1.5f;
         private const float NodeMass = 0.03f; // in kg
         private float MinimumTimeStep = 0.01f;
 

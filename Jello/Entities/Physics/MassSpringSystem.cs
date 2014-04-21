@@ -11,6 +11,12 @@ namespace Jello.Entities.Physics
         private List<Node> _nodes = new List<Node>();
         private List<Spring> _springs = new List<Spring>();
         private Func<Node, float, Vector3> _externalAcceleration = (node, dt) => Vector3.Zero;
+        private IntegratorType _integrator;
+
+        public MassSpringSystem(IntegratorType integrator)
+        {
+            _integrator = integrator;
+        }
 
         public void AddNode(Vector3 position, float mass)
         {
@@ -34,7 +40,10 @@ namespace Jello.Entities.Physics
             float stepSize = dt / steps;
             for (int i = 0; i < steps; i++)
             {
-                _nodes = RK4(_nodes, _springs, _externalAcceleration, stepSize);
+                if (_integrator == IntegratorType.RungeKutta4)
+                    _nodes = RK4(_nodes, _springs, _externalAcceleration, stepSize);
+                else if (_integrator == IntegratorType.EulerMethod)
+                    _nodes = EulerMethod(_nodes, _springs, _externalAcceleration, stepSize);
             }
             _externalAcceleration = (node, t) => Vector3.Zero;
         }
@@ -102,6 +111,18 @@ namespace Jello.Entities.Physics
                 TransitionNode(node,
                                node.Position + dt * (n1[i].Velocity + 2 * n2[i].Velocity + 2 * n3[i].Velocity + n4[i].Velocity) / 6,
                                node.Velocity + dt * (a1[i] + 2 * a2[i] + 2 * a3[i] + a4[i]) / 6));
+
+            return result.ToList();
+        }
+
+        private static List<Node> EulerMethod(List<Node> nodes, List<Spring> springs, Func<Node, float, Vector3> externalAcceleration, float dt)
+        {
+            var accels = AccelerationFunction(nodes, springs, externalAcceleration, dt);
+
+            var result = nodes.Select((node, i) =>
+                TransitionNode(node,
+                               node.Position + dt * node.Velocity,
+                               node.Velocity + dt * accels[i]));
 
             return result.ToList();
         }
