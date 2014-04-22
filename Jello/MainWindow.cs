@@ -52,14 +52,15 @@ namespace Jello
             if (kState.IsKeyDown(Key.D))
                 _camera.Strafe(1);
             if (kState.IsKeyDown(Key.Space))
-                cloth.Push(_camera.location, _camera.FacingVector, 1f, 1f, deltaTime);
-            if (kState.IsKeyDown(Key.N))
-                jello.Update(deltaTime);
+            {
+                jello.Push(_camera.Location, _camera.Location + _camera.FacingVector*10, 10f, 1f, deltaTime);
+                cloth.Push(_camera.Location, _camera.Location + _camera.FacingVector*10, 10f, 1f, deltaTime);
+            }
 
             OpenTK.Input.Mouse.SetPosition(WindowCenter.X, WindowCenter.Y);
 
             cloth.Update(deltaTime);
-            //jello.Update(deltaTime);
+            jello.Update(deltaTime);
         }
 
         protected override void OnRenderFrame(FrameEventArgs e)

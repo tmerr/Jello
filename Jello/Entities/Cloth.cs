@@ -124,27 +124,7 @@ namespace Jello.Entities
         /// </summary>
         public void Push(Vector3 startSausage, Vector3 endSausage, float radius, float pushAmount, float deltaTime)
         {
-            _pushAcceleration = node =>
-            {
-                float distance = PointToLineDistance(node.Position, startSausage, endSausage);
-                if (distance < radius)
-                {
-                    var force = (endSausage - startSausage).Normalized() * pushAmount;
-                    return force / node.Mass;
-                }
-                return Vector3.Zero;
-            };
-        }
-
-        public static float PointToLineDistance(Vector3 point, Vector3 lineStart, Vector3 lineEnd)
-        {
-            Vector3 v = lineEnd - lineStart;
-            Vector3 w = point - lineStart;
-            float c1 = Vector3.Dot(w, v);
-            float c2 = Vector3.Dot(v, v);
-            float b = c1 / c2;
-            Vector3 between = lineStart + b * v;
-            return between.Length;
+            _pushAcceleration = PushMath.PushAccelerationFunction(startSausage, endSausage, radius, pushAmount, deltaTime);
         }
     }
 }

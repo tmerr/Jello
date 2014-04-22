@@ -17,10 +17,11 @@ namespace Jello.Entities
         MassSpringSystem _system = new MassSpringSystem(IntegratorType.RungeKutta4);
 
         private const float Gravity = 9.8f;
-        private const float SpringConstant = 1000f;
+        private const float SpringConstant = 10f;
         private const float DampingConstant = 1.5f;
-        private const float NodeMass = 1f; // in kg
+        private const float NodeMass = 0.1f; // in kg
         private float MinimumTimeStep = 0.01f;
+        private Func<Node, Vector3> _pushAcceleration = i => Vector3.Zero;
 
         public ModelData ModelData
         {
@@ -137,9 +138,19 @@ namespace Jello.Entities
 
         public void Update(float deltaTime)
         {
-            //_system.SetExternalAcceleration((node, dt) => -Gravity * Vector3.UnitY);
+            _system.SetExternalAcceleration((node, dt) => _pushAcceleration(node) /*-Gravity * Vector3.UnitY*/);
             _system.Step(deltaTime, MinimumTimeStep);
             UpdatePositions();
+            _pushAcceleration = n => Vector3.Zero;
+        }
+
+        /// <summary>
+        /// Imagine a sausage shape starting at "startSausage" and ending at "endSausage" with radius "radius".
+        /// Push any points within the sausage by "pushAmount".
+        /// </summary>
+        public void Push(Vector3 startSausage, Vector3 endSausage, float radius, float pushAmount, float deltaTime)
+        {
+            _pushAcceleration = PushMath.PushAccelerationFunction(startSausage, endSausage, radius, pushAmount, deltaTime);
         }
     }
 }

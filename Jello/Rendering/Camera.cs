@@ -11,13 +11,13 @@ namespace Jello.Rendering
     {
         private float leftRightAngle;
         private float upDownAngle;
-        public Vector3 location { get; private set; }
+        public Vector3 Location { get; private set; }
 
         public Camera()
         {
             leftRightAngle = 0;
             upDownAngle = 0;
-            location = Vector3.Zero;
+            Location = Vector3.Zero;
         }
 
         public Vector3 FacingVector
@@ -41,18 +41,18 @@ namespace Jello.Rendering
 
         public void Strafe(float magnitude)
         {
-            location += magnitude * Vector3.Cross(FacingVector, Vector3.UnitY);
+            Location += magnitude * Vector3.Cross(FacingVector, Vector3.UnitY);
         }
 
         public void Forward(float magnitude)
         {
-            location += magnitude * FacingVector;
+            Location += magnitude * FacingVector;
         }
 
         public Matrix4 GetProjectionMatrix()
         {
             Matrix4 projection = Matrix4.CreatePerspectiveFieldOfView((float)Math.PI / 4f, 1, 1.0f, 1000.0f);
-            return Matrix4.LookAt(location, location + FacingVector, Vector3.UnitY) * projection;
+            return Matrix4.LookAt(Location, Location + FacingVector, Vector3.UnitY) * projection;
         }
 
         private static float Mod(float a, float n)
