@@ -13,6 +13,7 @@ namespace Jello.Entities
         private VertexBuffer<Vector3> _vertexBuffer;
         private VertexBuffer<Vector3> _normalsBuffer;
         private VertexBuffer<uint> _indicesBuffer;
+        private List<uint> _indices;
 
         MassSpringSystem _system = new MassSpringSystem(IntegratorType.RungeKutta4);
 
@@ -21,7 +22,6 @@ namespace Jello.Entities
         private const float DampingConstant = 1.5f;
         private const float NodeMass = 0.03f; // in kg
         private float MinimumTimeStep = 0.01f;
-
         private Func<Node, Vector3> _pushAcceleration = n => Vector3.Zero;
 
         public ModelData ModelData
@@ -84,12 +84,12 @@ namespace Jello.Entities
 
             // Set indices for drawing
             // Two triangles make each square, so six indices per node except for the last row and column.
-            List<uint> indices = new List<uint>(6 * (nodesPerAxis - 1) * (nodesPerAxis - 1));
+            _indices = new List<uint>(6 * (nodesPerAxis - 1) * (nodesPerAxis - 1));
             for (int y = 0; y < nodesPerAxis - 1; y++)
             {
                 for (int x = 0; x < nodesPerAxis - 1; x++)
                 {
-                    indices.AddRange(new uint[] {
+                    _indices.AddRange(new uint[] {
                         (uint)(y*nodesPerAxis + x),
                         (uint)((y+1)*nodesPerAxis + x),
                         (uint)((y+1)*nodesPerAxis + x + 1),
@@ -99,7 +99,7 @@ namespace Jello.Entities
                     });
                 }
             }
-            _indicesBuffer.SetData(indices.ToArray());
+            _indicesBuffer.SetData(_indices.ToArray());
             UpdatePositions();
         }
 
@@ -113,7 +113,7 @@ namespace Jello.Entities
         public void Update(float deltaTime)
         {
             _system.SetExternalAcceleration((node, dt) => -Gravity*Vector3.UnitY + _pushAcceleration(node));
-            _system.Step(deltaTime, MinimumTimeStep);
+            _system.Step(deltaTime, MinimumTimeStep, _indices);
             UpdatePositions();
             _pushAcceleration = n => Vector3.Zero;
         }
@@ -124,7 +124,11 @@ namespace Jello.Entities
         /// </summary>
         public void Push(Vector3 startSausage, Vector3 endSausage, float radius, float pushAmount, float deltaTime)
         {
-            _pushAcceleration = PushMath.PushAccelerationFunction(startSausage, endSausage, radius, pushAmount, deltaTime);
+            _pushAcceleration =
+                Node =>
+                {
+                    return PushMath.CalculatePushForce(Node.Position, startSausage, endSausage, radius, pushAmount, deltaTime) / Node.Mass;
+                };
         }
     }
 }

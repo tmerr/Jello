@@ -1,5 +1,6 @@
 ﻿using OpenTK;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -34,16 +35,18 @@ namespace Jello.Physics
             _springs.Add(new Spring(nodeA, nodeB, restLength, springConstant, dampingConstant));
         }
 
-        public void Step(float dt, float minimumTime)
+        public void Step(float dt, float minimumTime, List<uint> indices)
         {
             int steps = (int)Math.Ceiling(dt / minimumTime);
             float stepSize = dt / steps;
             for (int i = 0; i < steps; i++)
             {
+                var backupnodes = _nodes.ToList();
                 if (_integrator == IntegratorType.RungeKutta4)
                     _nodes = RK4(_nodes, _springs, _externalAcceleration, stepSize);
                 else if (_integrator == IntegratorType.EulerMethod)
                     _nodes = EulerMethod(_nodes, _springs, _externalAcceleration, stepSize);
+                _nodes = CollisionResolution.ResolveCollisions(backupnodes, _nodes, indices, dt);
             }
             _externalAcceleration = (node, t) => Vector3.Zero;
         }
@@ -58,7 +61,7 @@ namespace Jello.Physics
             _externalAcceleration = func;
         }
 
-        private static List<Vector3> AccelerationFunction(List<Node> nodes, List<Spring> springs, Func<Node, float, Vector3> externalAcceleration, float dt)
+        private static List<Vector3> SpringsAccelerationFunction(List<Node> nodes, List<Spring> springs, float dt)
         {
             var accelerations = new List<Vector3>(new Vector3[nodes.Count]);
             foreach (var spring in springs)
@@ -76,13 +79,24 @@ namespace Jello.Physics
                 if (B.Anchor == null)
                     accelerations[spring.B] -= force / A.Mass;
             }
-            for (int i = 0; i < nodes.Count; i++)
-            {
-                if (nodes[i].Anchor == null)
-                    accelerations[i] += externalAcceleration(nodes[i], dt);
-            }
 
             return accelerations;
+        }
+
+        private static List<Vector3> AccelerationFunction(List<Node> nodes, List<Spring> springs, Func<Node, float, Vector3> externalAcceleration, float dt)
+        {
+            var result = new List<Vector3>(new Vector3[nodes.Count]);
+
+            var springAccelerations = SpringsAccelerationFunction(nodes, springs, dt);
+
+            for (int i = 0; i < nodes.Count; i++)
+            {
+                result[i] += springAccelerations[i];
+                if (nodes[i].Anchor == null)
+                    result[i] += externalAcceleration(nodes[i], dt);
+            }
+
+            return result;
         }
 
         private static Node TransitionNode(Node previous, Vector3 newPosition, Vector3 newVelocity)

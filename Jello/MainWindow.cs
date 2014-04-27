@@ -59,7 +59,7 @@ namespace Jello
 
             OpenTK.Input.Mouse.SetPosition(WindowCenter.X, WindowCenter.Y);
 
-            cloth.Update(deltaTime);
+            //cloth.Update(deltaTime);
             jello.Update(deltaTime);
         }
 
