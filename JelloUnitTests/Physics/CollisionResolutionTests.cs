@@ -1,7 +1,5 @@
 ﻿using System;
-
 using OpenTK;
-
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace JelloUnitTests.Physics

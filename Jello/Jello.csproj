@@ -48,6 +48,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Cellular\BitMatrix3d.cs" />
+    <Compile Include="Cellular\CellularSystem.cs" />
     <Compile Include="Entities\Cloth.cs" />
     <Compile Include="Physics\CollisionResolution.cs" />
     <Compile Include="Physics\IntegratorType.cs" />

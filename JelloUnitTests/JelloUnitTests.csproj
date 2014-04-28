@@ -61,6 +61,7 @@
   <ItemGroup>
     <Compile Include="Physics\CollisionResolutionTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Cellular\BitMatrix3dTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Jello\Jello.csproj">
